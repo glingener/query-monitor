@@ -71,6 +71,9 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 		echo $th_type; // WPCS: XSS ok.
 		echo '<th scope="col">' . esc_html__( 'Priority', 'query-monitor' ) . '</th>';
 		echo '<th scope="col">' . esc_html( $callback_label ) . '</th>';
+		echo '<th scope="col">' . esc_html__( 'Time Used', 'query-monitor' ) . '</th>';
+		echo '<th scope="col">' . esc_html__( 'Memory Added', 'query-monitor' ) . '</th>';
+		echo '<th scope="col">' . esc_html__( 'Peak Memory Usage', 'query-monitor' ) . '</th>';
 		echo '<th scope="col" class="qm-filterable-column">';
 		echo $this->build_filter( 'component', $data->components, __( 'Component', 'query-monitor' ), array(
 			'highlight' => 'subject',
@@ -124,6 +127,11 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 					$component = '';
 					$subject = '';
 
+					if ( ! isset( $action['callback']['peak_memory_usage'] ) ) {
+						// Don't show callbacks, which weren't triggered.
+						continue;
+					}
+
 					if ( isset( $action['callback']['component'] ) ) {
 						$component = $action['callback']['component']->name;
 						$subject = $component;
@@ -167,6 +175,7 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 						$class = '';
 					}
 
+                    // Priority
 					echo '<td class="qm-num' . esc_attr( $class ) . '">';
 
 					echo esc_html( $action['priority'] );
@@ -181,6 +190,7 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 
 					echo '</td>';
 
+                    // Action
 					if ( isset( $action['callback']['file'] ) ) {
 						if ( self::has_clickable_links() ) {
 							echo '<td class="qm-nowrap qm-ltr' . esc_attr( $class ) . '">';
@@ -211,7 +221,22 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 
 						echo '</td>';
 					}
+					// Time Used
+					echo '<td class="qm-num' . esc_attr( $class ) . '">';
+					echo isset( $action['callback']['time_used'] ) ? esc_html( $action['callback']['time_used'] ) : '';
+					echo '</td>';
 
+					// Memory Added
+					echo '<td class="qm-num' . esc_attr( $class ) . '">';
+					echo isset( $action['callback']['memory_added'] ) ? esc_html( $action['callback']['memory_added'] ) : '';
+					echo '</td>';
+
+					// Peak Memory Usage
+					echo '<td class="qm-num' . esc_attr( $class ) . '">';
+					echo isset( $action['callback']['peak_memory_usage'] ) ? esc_html( $action['callback']['peak_memory_usage'] ) : '';
+					echo '</td>';
+
+					// Component Name
 					echo '<td class="qm-nowrap' . esc_attr( $class ) . '">';
 					echo esc_html( $component );
 					echo '</td>';
@@ -219,6 +244,9 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 					$first = false;
 				}
 			} else {
+				// Don't show empty hooks.
+				continue;
+
 				echo "<tr{$attr}>"; // WPCS: XSS ok.
 				echo '<th scope="row" class="qm-ltr">';
 				echo '<code>' . esc_html( $hook['name'] ) . '</code>';
