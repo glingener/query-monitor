@@ -72,6 +72,7 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 		echo '<th scope="col">' . esc_html__( 'Priority', 'query-monitor' ) . '</th>';
 		echo '<th scope="col">' . esc_html( $callback_label ) . '</th>';
 		echo '<th scope="col">' . esc_html__( 'Time Used', 'query-monitor' ) . '</th>';
+		echo '<th scope="col">' . esc_html__( 'Memory Total', 'query-monitor' ) . '</th>';
 		echo '<th scope="col">' . esc_html__( 'Memory Added', 'query-monitor' ) . '</th>';
 		echo '<th scope="col">' . esc_html__( 'Peak Memory Usage', 'query-monitor' ) . '</th>';
 		echo '<th scope="col" class="qm-filterable-column">';
@@ -224,6 +225,11 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 					// Time Used
 					echo '<td class="qm-num' . esc_attr( $class ) . '">';
 					echo isset( $action['callback']['time_used'] ) ? esc_html( $action['callback']['time_used'] ) : '';
+					echo '</td>';
+
+					// Memory Total
+					echo '<td class="qm-num' . esc_attr( $class ) . '">';
+					echo isset( $action['callback']['memory_total'] ) ? esc_html( $action['callback']['memory_total'] ) : '';
 					echo '</td>';
 
 					// Memory Added

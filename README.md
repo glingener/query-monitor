@@ -61,6 +61,7 @@
 
             //- MODIFICATION START
             $the_['time_used'] = round(microtime(true) - $time_start, 4) . ' s';
+            $the_['memory_total'] = round(memory_get_usage() / 2048, 2) . ' MB';
             $the_['memory_added'] = round((memory_get_usage()-$before_memory) / 1024) . ' KB';
             $the_['peak_memory_usage'] = round((memory_get_peak_usage()-$before_memory) / 1024) . ' KB';
             //- MODIFICATION END
